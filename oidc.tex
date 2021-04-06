@@ -30,14 +30,16 @@
 	\end{quotation}
 
 	\vspace*{1.5em}
+	\pause
 
 	\begin{itemize}
 		\item \emph{Traditional solutions}
 		\begin{itemize}
-			\item OpenID 2.0 \cite{openid-auth-2}
 			\item SAML 2.0 \cite{saml-2} \hfill \gray{$\to$ DFN-AAI, SWITCHaai, \etc}
+			\item OpenID 2.0 \cite{openid-auth-2}
 			\item Kerberos \cite{kerberos}
 		\end{itemize}
+		\pause
 		\item \emph{Modern solution}
 		\begin{itemize}
 			\item OpenID Connect \cite{oidc-core}
@@ -54,8 +56,10 @@
 \begin{frame}{OpenID Connect}
 	\begin{itemize}
 		\item Authentication on top of the \emph{OAuth 2.0} \cLine{\cite{RFC6749}} protocol \hfill \gray{$\to$ Webinar}
+		\pause
 		\item \emph{Authorization server} authenticates the user and issues an ID token
 		\item \emph{ID tokens} encode \emph{claims} about the user's identity
+		\pause
 		\item \emph{Clients} can decode and \emph{verify the identity claims}
 		\item Amount of information a client may request can be restricted to specific \emph{scopes}
 	\end{itemize}
@@ -66,6 +70,7 @@
 	\begin{block}{OpenID Provider (OP) \hfill \small $\to$ \eg University's Identitiy Provider}
 		\emph{Authorization Server} that is capable of \emph{Authenticating the End-User} and \emph{providing Claims} to a Relying Party about the Authentication event and the End-User. \hfill \cite[1.2]{oidc-core}
 	\end{block}
+	\pause
 	\hspace*{2em}
 	\begin{block}{Relying Party (RP) \hfill \small $\to$ \eg Opencast}
 		\emph{Client application} \emph{requiring End-User Authentication and Claims} from an OpenID Provider. \hfill \cite[1.2]{oidc-core}
@@ -85,9 +90,9 @@
 		\centerline{\includegraphics[height=0.83\textheight]{figures/abstract-protocol-flow-4}}
 	\end{overprint}
 	\vspace*{-1.8em}
-	%\onslide<4>{
+	\onslide<4>{
 		\fnote{\cite[1.3]{oidc-core}}
-	%}
+	}
 \end{frame}
 
 % \begin{frame}{Client Types}
@@ -122,15 +127,16 @@
 			\item No tokens are exposed to the user agent (\ie browser) \gray{$\to$ most secure}
 			\item Using this OAuth flow \gray{(with PKCE)} is current best practice \cite{RFC7636, ietf-oauth-security}
 		\end{itemize}
-		\item \emph{Implicit Flow} \hfill {\scriptsize \cite[3.2]{oidc-core}}
+		\pause
+		\item {\color<1-2| handout:0>{ed-blue}\textbf{Implicit Flow}} \hfill {\scriptsize \cite[3.2]{oidc-core}}
 		\begin{itemize}
-			\item Simplified flow optimized for client-side web applications
-			\item Tokens are exposed to the user agent (\ie browser)
-			\item Obsolete in OAuth 2.1 draft \cite{ietf-oauth-2.1} \gray{$\to$ security drawbacks}
+			\item \color<3>{black!40}{Simplified flow optimized for client-side web applications}
+			\item \color<3>{black!40}{Tokens are exposed to the user agent (\ie browser)}
+			\item \color<3>{black!40}{Obsolete in OAuth 2.1 draft \cite{ietf-oauth-2.1} \gray{$\to$ security drawbacks}}
 		\end{itemize}
-		\item \emph{Hybrid Flow} \hfill {\scriptsize \cite[3.3]{oidc-core}}
+		\item {\color<1-2| handout:0>{ed-blue}\textbf{Hybrid Flow}} \hfill {\scriptsize \cite[3.3]{oidc-core}}
 		\begin{itemize}
-			\item Allows combinations of the other two flows
+			\item \color<3>{black!40}{Allows combinations of the other two flows}
 		\end{itemize}
 	\end{itemize}
 \end{frame}
@@ -306,7 +312,8 @@
 \begin{frame}{ID Token}
 	\vspace*{1em}
 	\begin{itemize}
-		\item Represented as \emph{JSON Web Token} (JWT) \cite{RFC7519}
+		\item Represented as \emph{JSON Web Token} \cite{RFC7519}
+		\pause
 		\item \emph{Mandatory claims}
 		\begin{itemize}
 			\item \code{\textbf{iss}}: identifier of the token issuer \hfill \gray{$\to$ \eg \texttt{https://auth.example.com}}
@@ -314,6 +321,7 @@
 			\item \code{\textbf{aud}}: audience(s) for which the token is intended for \hfill \gray{$\to$ Client ID, \eg \texttt{opencast}}
 			\item \code{\textbf{iat}}, \code{\textbf{exp}}: timestamps for token's issuing and expiration time \hfill \gray{$\to$ \eg \texttt{1617798600}}
 		\end{itemize}
+		\pause
 		\item \emph{Other standard claims}
 		\begin{itemize}
 			\item \code{\textbf{preferred\_username}}: user's preferred username \hfill \gray{$\to$ \eg \texttt{j.doe@example.com}}
@@ -327,7 +335,7 @@
 	\fnote{\cite[2]{oidc-core}}
 \end{frame}
 
-\begin{frame}{JSON Web Tokens (JWT)}
+\begin{frame}{JSON Web Tokens}
 	\begin{itemize}
 		\item \emph{Structure}
 		\begin{itemize}
@@ -337,10 +345,9 @@
 		\end{itemize}
 		\item All parts are \emph{encoded using base64}
 		\item All parts are \emph{concatenated delimited by dots} (\texttt{'.'})
+		\pause
 		\item Example with claims from previous slide using HMAC-SHA256 with secret \code{opencast}
 	\end{itemize}
-
-	\pause
 
 	\begin{center}
 		\footnotesize
@@ -411,11 +418,12 @@
 		\centerline{\includegraphics[width=0.84\textwidth]{figures/prototype-architecture-3}}
 	\end{overprint}
 	\begin{itemize}
+		\item<4> \emph{NGINX ensures} that requests to Opencast are \emph{authenticated} \hfill \gray{$\to$ \texttt{auth\_request}}
 		\item<4> Opencast receives ID token from OAuth2 Proxy within \emph{Authorization Header}
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{\texttt{security-jwt} Module}
+\begin{frame}{Opencast Module \texttt{security-jwt}}
 	\begin{overprint}
 		\onslide<1| handout:1>
 		\centerline{\includesvg[height=0.7\textheight]{figures/security-jwt-1}}
@@ -441,44 +449,43 @@
 
 \begin{frame}{Why to use OpenID Connect}
 	\begin{itemize}
-		\item User information is provided in a standard format
-		\item Offered by many proxy implementations
+		\item User information is provided in a \emph{standardized format}
+		\pause
+		\item Offered by many \emph{proxy implementations}
 		\begin{itemize}
-			\item Dex: LDAP, SAML 2.0, GitHub, Microsoft, LinkedIn, \dots
-			\item SATOSA: SAML 2.0, Social Logins
+			\item \textbf{Dex}: LDAP, SAML 2.0, GitHub, Microsoft, LinkedIn, \dots
+			\item \textbf{SATOSA}: SAML 2.0, Social Logins
 		\end{itemize}
-		\item Proxy can be shared by multiple applications
+		\pause
+		\item Proxy can be \emph{shared by multiple applications}
 		\begin{itemize}
 			\item[$\Rightarrow$] Authentication can be implemented easily \gray{(including inter-application SSO)}
 		\end{itemize}
 	\end{itemize}
+	\vspace{3em}
+	\pause
+	\centering \emph{\large One authentication scheme to rule them all}
 \end{frame}
 
 \begin{frame}{Conclusion}
 	\begin{itemize}
-		\item OpenID connect is a \emph{modern SSO solution} based on OAuth 2.0
+		\item OpenID connect is a \emph{modern authentication scheme} based on OAuth 2.0
+		\pause
 		\item Using OpenID connect has \emph{many advantages}
-		\item We use OpenID connect in combination with DFN-AAI for \emph{educast.nrw}
+		\pause
+		\item We use it for \emph{educast.nrw}
 		\begin{itemize}
 			\item Visit the \enquote{Deploying educast.nrw} talk \gray{(tomorrow at 2:45pm, UTC)}
 		\end{itemize}
+		\pause
+		\item Pull request for the \texttt{security-jwt} module will come soon
 		\item \emph{Try it yourself!}
 	\end{itemize}
-	\vspace{1em}
-	\begin{columns}
-		\begin{column}{0.5\textwidth}
-			\centering
-			\includegraphics[height=1.2cm]{figures/github-logo} \\
-			\textbf{Slides} \\
-			\href{https://github.com/joneug/oidc-opencast}{github.com/joneug/oidc-opencast}
-		\end{column}
-		\begin{column}{0.5\textwidth}
-			\centering
-			\includegraphics[height=1.2cm]{figures/github-logo} \\
-			\textbf{Demo Project} \\
-			\href{httpgithub.com/joneug/oidc-opencast-demo}{github.com/joneug/oidc-opencast-demo}
-		\end{column}
-	\end{columns}
+	\vspace{0.5em}
+	\centering
+	\includegraphics[height=1.2cm]{figures/github-logo} \\
+	\textbf{Demo Project} \\
+	\href{http://github.com/joneug/oidc-opencast-demo}{github.com/joneug/oidc-opencast-demo}
 \end{frame}
 
 \makeend{Thank You!}
