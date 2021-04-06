@@ -1,0 +1,77 @@
+% Packages
+\usetikzlibrary{positioning,calc,decorations.pathmorphing,arrows,shapes,chains,automata}
+\usepackage{csquotes} % enquote
+\usepackage{pdfcomment} % Presenter notes
+\usepackage{svg} % automatic conversion of SVGs
+\usepackage{tabularx} % tables with line breaks
+\usepackage{minted} % syntax highlighting
+\usepackage{tipa} % phonetic spelling
+\usepackage{multicol} % multiple columns in e.g. itemize
+
+% Colors
+\definecolor{codekeywd}{rgb}{0.129,0.290,0.529}
+\definecolor{codebg}{rgb}{0.95,0.95,0.95}
+
+% Commands
+\newcommand{\fnote}[1]{
+	\begin{flushright}
+		\scriptsize{#1}
+	\end{flushright}
+}
+\newcommand{\pdfnote}[1]{\marginnote{\pdfcomment[icon=note,color=white]{#1}}}
+\newcommand{\gray}[1]{\textcolor{black!40}{#1}}
+\newcommand{\code}[1]{\colorbox{codebg}{\texttt{\footnotesize{#1}}}}
+\newcommand{\smallCode}[1]{\colorbox{codebg}{\texttt{\scriptsize{#1}}}}
+\newcommand{\codeKeywd}[1]{\colorbox{codebg}{\texttt{\footnotesize{\textbf{\textcolor{codekeywd}{#1}}}}}}
+\newcommand{\cLine}[1]{\raisebox{0.3ex}{#1}}
+
+% minted
+\makeatletter
+\renewenvironment{minted@colorbg}[1]{
+	\setlength{\fboxsep}{\z@}
+	\def\minted@bgcol{#1}
+	\noindent
+	\begin{lrbox}{\minted@bgbox}
+		\begin{minipage}{\linewidth}}
+		{\end{minipage}
+	\end{lrbox}%
+	\colorbox{\minted@bgcol}{\usebox{\minted@bgbox}}}
+\makeatother
+\newminted{json}{
+	style=tango,
+	tabsize=2,
+	fontsize=\footnotesize,
+	frame=lines,
+	framesep=5\fboxrule,
+	framerule=1pt,
+	bgcolor=codebg,
+	rulecolor=\color{gray!40}
+}
+\newminted{text}{
+	style=tango,
+	tabsize=2,
+	fontsize=\footnotesize,
+	frame=lines,
+	framesep=5\fboxrule,
+	framerule=1pt,
+	bgcolor=codebg,
+	rulecolor=\color{gray!40},
+	escapeinside=||
+}
+\newmintinline{php}{
+	style=tango,
+	fontsize=\footnotesize,
+	bgcolor=codebg
+}
+
+% biblatex
+\DeclareCiteCommand{\cite}
+  {\color{black!40}[\usebibmacro{prenote}}%
+  {\usebibmacro{citeindex}%
+   \usebibmacro{cite}}
+  {\multicitedelim}
+  {\usebibmacro{postnote}]}
+
+% omit the page prefix for all citations
+\DeclareFieldFormat{postnote}{#1}
+\DeclareFieldFormat{multipostnote}{#1}
