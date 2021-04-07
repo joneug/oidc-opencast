@@ -425,17 +425,22 @@
 
 \begin{frame}{Opencast Module \texttt{security-jwt}}
 	\begin{overprint}
-		\onslide<1| handout:1>
+		\onslide<1| handout:0>
 		\centerline{\includesvg[height=0.7\textheight]{figures/security-jwt-1}}
-		\onslide<2| handout:0>
+		\onslide<2-| handout:1>
 		\centerline{\includesvg[height=0.7\textheight]{figures/security-jwt-2}}
 	\end{overprint}
+	\vspace*{-1em}
 	\begin{multicols}{2}
 	\begin{itemize}
-		\item Validating and decoding ID token
-		\item Creating and updating user references
+		\item<3> Validating and decoding ID token
+		\item<3> Creating and updating user references
 	\end{itemize}
 	\end{multicols}
+	\vspace*{-1em}
+	\begin{itemize}
+		\item<3> Configurable via SpEL \gray{$\to$ Spring Security Configuration}
+	\end{itemize}
 \end{frame}
 
 \makesection{Demo}[
@@ -478,7 +483,8 @@
 			\item Visit the \enquote{Deploying educast.nrw} talk \gray{(tomorrow at 2:45pm, UTC)}
 		\end{itemize}
 		\pause
-		\item Pull request for the \texttt{security-jwt} module will come soon
+		\item Pull request for the \texttt{security-jwt} module coming soon
+		\pause
 		\item \emph{Try it yourself!}
 	\end{itemize}
 	\vspace{0.5em}
